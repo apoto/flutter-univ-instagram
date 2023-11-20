@@ -5,8 +5,10 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('my page'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('マイページ'),
+      ),
     );
   }
 }

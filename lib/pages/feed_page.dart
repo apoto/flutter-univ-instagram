@@ -5,8 +5,10 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('home'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('フィード'),
+      ),
     );
   }
 }
