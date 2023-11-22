@@ -36,9 +36,16 @@ class FeedPage extends StatelessWidget {
   }
 }
 
-class InstagramFeedItem extends StatelessWidget {
+class InstagramFeedItem extends StatefulWidget {
   const InstagramFeedItem({super.key, required this.imageUrls});
   final List<String> imageUrls;
+
+  @override
+  State<InstagramFeedItem> createState() => _InstagramFeedItemState();
+}
+
+class _InstagramFeedItemState extends State<InstagramFeedItem> {
+  int _currentCarousel = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +104,13 @@ class InstagramFeedItem extends StatelessWidget {
             height: 400.0,
             viewportFraction: 1,
             enableInfiniteScroll: false,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentCarousel = index;
+              });
+            },
           ),
-          items: imageUrls.map((i) {
+          items: widget.imageUrls.map((i) {
             return Builder(
               builder: (BuildContext context) {
                 return Image.network(
@@ -109,12 +121,12 @@ class InstagramFeedItem extends StatelessWidget {
             );
           }).toList(),
         ),
-        const Padding(
-          padding: EdgeInsets.all(8),
+        Padding(
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              const Expanded(
                 child: Row(
                   children: [
                     Icon(
@@ -134,11 +146,25 @@ class InstagramFeedItem extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.more_horiz,
-                size: 28,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.imageUrls.map((url) {
+                  int index = widget.imageUrls.indexOf(url);
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentCarousel == index
+                          ? const Color.fromRGBO(0, 152, 252, 0.9)
+                          : const Color.fromRGBO(0, 0, 0, 0.1),
+                    ),
+                  );
+                }).toList(),
               ),
-              Expanded(
+              const Expanded(
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Icon(
